@@ -1,0 +1,32 @@
+ação: essa procedure serve para facilitar a criação de um novo prontuário
+      em um novo aluno. Como a criação de prontuários é o foco do projeto,
+      devemos fazer esta de uma forma rápida, minimizando processos manuais
+      como o de pegar o ID do prontuário manualmente e adicionar. Pra isso 
+      então podemos usar essa procedure.
+
+delimiter $$
+create procedure sp_inserirProntuario(
+    in p_RAAluno char(7),
+    in p_CPFProfissional varchar(14),
+    in p_data date,
+    in p_descricao text,
+    in p_condicaoRestricao text
+)
+begin
+    declare novoID int;
+    insert into Prontuario (dataProntuario, descricao, condicaoRestricao)
+    values (p_data, p_descricao, p_condicaoRestricao);
+    set novoID = last_insert_id();
+    insert into fazProntuario (CPFProfissional, RAAluno, IDprontuario)
+    values (p_CPFProfissional, p_RAAluno, novoID);
+end$$
+delimiter ;
+
+exemplo de uso:
+call sp_inserirProntuario(
+    'A123456',
+    '123.456.789-00',
+    '2025-09-05',
+    'Sessão de acompanhamento escolar',
+    'Sem restrições'
+);
