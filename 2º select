@@ -1,0 +1,10 @@
+ação: busca o prontuário mais recente feito no sistema de acordo com o aluno que está
+      consultando. Esse select facilita que o profissional encontre de forma rápida 
+      a última consulta que aquele aluno realizou.
+
+
+select a.nome as Aluno, max(p.dataProntuario) as UltimoProntuario
+from Aluno a
+join fazProntuario fp on a.RA = fp.RAAluno
+join Prontuario p on fp.IDprontuario = p.ID
+group by a.nome;
