@@ -1,0 +1,27 @@
+ação: essa function serve para calcular a idade, seja de um aluno ou de um servidor.
+      Ela é útil quando um servidor quiser atualizar a idade de um aluno, ou algo
+      assim.
+
+DELIMITER $$
+CREATE FUNCTION CalcularIdadePessoa(
+    tipoPessoa VARCHAR(20),
+    identificador VARCHAR(20)
+)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE dataNascimento DATE;
+    DECLARE idade INT;
+    IF tipoPessoa = 'Aluno' THEN
+        SELECT dataNasc INTO dataNascimento
+        FROM Aluno
+        WHERE RA = identificador;
+    ELSEIF tipoPessoa = 'Profissional' THEN
+        SELECT dataNasc INTO dataNascimento
+        FROM Profissional
+        WHERE CPF = identificador;
+    END IF;
+    SET idade = TIMESTAMPDIFF(YEAR, dataNascimento, CURDATE());
+    RETURN idade;
+END$$
+DELIMITER ;
