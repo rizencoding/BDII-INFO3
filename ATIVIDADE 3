@@ -1,0 +1,25 @@
+ação: essa view serve para criar um histórico completo de prontuários
+      por aluno, o que é algo muito recorrente durante as consultas nos
+      respectivos setores que estamos trabalhando. Por isso é necessário
+      que tenha uma view para visualizar de forma rápida o histórico do aluno.
+
+
+create view vw_HistoricoProntuarios as
+select 
+    a.nome as Aluno,
+    a.RA,
+    p.nome as Profissional,
+    pr.ID as IDProntuario,
+    pr.dataProntuario,
+    pr.descricao,
+    pr.condicaoRestricao
+from Aluno a
+join fazProntuario fp on a.RA = fp.RAAluno
+join Profissional p on fp.CPFProfissional = p.CPF
+join Prontuario pr on fp.IDprontuario = pr.ID
+order by a.nome, pr.dataProntuario;
+
+select para buscar o histórico do aluno:
+select * 
+from vw_HistoricoProntuarios
+where RA = 'A123456';
