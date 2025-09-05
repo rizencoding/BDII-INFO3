@@ -1,16 +1,16 @@
-ação: esse select serve para criar um histórico ordenado por aluno dos
-      prontuários já criados, possibilitando que o profissional tenha
-      em mãos todos prontuários que ele já fez para um aluno de forma
-      rápida.
+ação: esse select serve para termos uma visão ampla de cada responsável,
+      o aluno associado e o histórico de prontuários desse aluno, facili-
+      tando a visualização de informações daquele aluno e mostrando quem é
+      seu responsável.
 
 select 
-  a.nome as Aluno
-  p.nome as Profissional,
-  pr.dataProntuario,
-  pr.descricao,
-  pr.condicaoRestricao
-from Aluno a
+    r.nome as Responsavel,
+    a.nome as Aluno,
+    pr.dataProntuario,
+    pr.descricao
+from Responsavel r
+join alunoPossuiResponsavel ar on r.cpf = ar.cpfResponsavel
+join Aluno a on ar.RAAluno = a.RA
 join fazProntuario fp on a.RA = fp.RAAluno
-join Profissional p on fp.CPFProfissional = p.CPF
 join Prontuario pr on fp.IDprontuario = pr.ID
-order by a.nome, pr.dataProntuario;
+order by r.nome, a.nome, pr.dataProntuario;
