@@ -1,0 +1,8 @@
+ação: contar quantos prontuários cada profssional cadastrado fez,
+a fim de gerir a carga horária de cada um deles e observar a
+demanda de cada profissional.
+
+select p.nome as Profissional, count(fp.IDprontuario) as TotalProntuarios
+from Profissional p
+join fazProntuario fp on p.CPF = fp.CPFProfissional
+group by p.nome;
